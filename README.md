@@ -2,7 +2,7 @@
 
 ![](nmapp.gif)
 
-nmapp is a CLI tool which parses Nmap scan output and renders it into a normalized, deterministic Markdown format. Given two logically equivalent Nmap scans—even if they differ in ordering, timing, or extraneous metadata—nmapp produces the same predictable Markdown output.
+nmapp is a CLI tool which parses Nmap scan output and renders it into a normalized, deterministic Markdown format, showing only open ports and corresponding addresses. Given two logically equivalent Nmap scans—even if they differ in ordering, timing, or extraneous metadata—nmapp produces the same predictable Markdown output.
 
 ## Installation
 
