@@ -29,7 +29,8 @@ Coming soon
 
 ### With docker
 
+Still figuring it out myself: feel free to contribute. At least it's on GitHub Container Registry:
+
 ```sh
-docker run --rm \
-  ghcr.io/hacktegic/nmapp:latest nmapp --help
+docker run --rm ghcr.io/hacktegic/nmapp:latest nmapp
 ```
