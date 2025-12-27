@@ -2,11 +2,13 @@ from enum import Enum
 import xml.etree.ElementTree as ET
 from typing import Dict, List
 
+
 class NmapOriginalFormat(Enum):
     NORMAL = 1
     XML = 2
     GREPABLE = 3
     LOOKS_INVALID = 10
+
 
 def detect_format(nmap_original_output: str) -> NmapOriginalFormat:
     if nmap_original_output.find("Starting Nmap ") >= 0:
@@ -16,6 +18,7 @@ def detect_format(nmap_original_output: str) -> NmapOriginalFormat:
     if nmap_original_output.find("# Nmap ") >= 0:
         return NmapOriginalFormat.GREPABLE
     return NmapOriginalFormat.LOOKS_INVALID
+
 
 def reformat_to_markdown(nmap_original_output: str) -> str:
     if detect_format(nmap_original_output) == NmapOriginalFormat.LOOKS_INVALID:
@@ -29,9 +32,9 @@ def reformat_to_markdown(nmap_original_output: str) -> str:
         raise NotImplementedError("Only XML input is supported for now")
     return reformat_dict_to_markdown(nmap_open_ports)
 
+
 def reformat_xml_to_dict(nmap_original_output: str) -> dict:
-    """Parse Nmap XML output and return a dict of address -> sorted list of open ports (ints).
-    """
+    """Parse Nmap XML output and return a dict of address -> sorted list of open ports (ints)."""
     try:
         root = ET.fromstring(nmap_original_output)
     except ET.ParseError as exc:
@@ -39,8 +42,8 @@ def reformat_xml_to_dict(nmap_original_output: str) -> dict:
 
     hosts_ports: Dict[str, set] = {}
 
-    for host in root.findall('host'):
-        addrs = [a.get('addr') for a in host.findall('address') if a.get('addr')]
+    for host in root.findall("host"):
+        addrs = [a.get("addr") for a in host.findall("address") if a.get("addr")]
         if not addrs:
             continue
 
@@ -48,20 +51,20 @@ def reformat_xml_to_dict(nmap_original_output: str) -> dict:
         addrs.sort()
 
         # Join into a comma-separated string
-        addr = ','.join(addrs)
+        addr = ",".join(addrs)
 
         # find ports
-        ports_elem = host.find('ports')
+        ports_elem = host.find("ports")
         if ports_elem is None:
             continue
 
-        for port in ports_elem.findall('port'):
-            state = port.find('state')
+        for port in ports_elem.findall("port"):
+            state = port.find("state")
             if state is None:
                 continue
-            if state.get('state') != 'open':
+            if state.get("state") != "open":
                 continue
-            portid = port.get('portid')
+            portid = port.get("portid")
             if not portid:
                 continue
             try:
