@@ -1,0 +1,56 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "nmapp"
+dynamic = ["version"]
+description = ''
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "Artiom Mocrenco", email = "artiom.mocrenco@gmail.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python :: 3.14",
+]
+dependencies = []
+
+[tool.hatch.version]
+path = "src/nmapp/__about__.py"
+
+[project.scripts]
+nmapp = "nmapp.__main__:main"
+
+[tool.coverage.run]
+source_pkgs = ["nmapp", "tests"]
+branch = true
+parallel = true
+omit = [
+  "src/nmapp/__about__.py",
+]
+
+[tool.coverage.paths]
+nmapp = ["src/nmapp", "*/nmapp/src/nmapp"]
+tests = ["tests", "*/nmapp/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+
+[tool.pytest.ini_options]
+pythonpath = [
+  ".", "src"
+]
+
+[tool.hatch.envs.hatch-test.scripts]
+run = "pytest{env:HATCH_TEST_ARGS:} {args}"
+run-cov = "coverage run -m pytest{env:HATCH_TEST_ARGS:} {args}"
+cov-combine = "coverage combine"
+cov-report = "coverage html"
